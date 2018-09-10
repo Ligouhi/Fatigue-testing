@@ -16,6 +16,10 @@ from pyseeta import Aligner
 from get_point import get_point
 import os
 import win32com.client
+<<<<<<< HEAD
+from modelm import models2
+=======
+>>>>>>> eeefcbf2b85cd27b19bae65ac760281ee8694b23
 
 def get_model(mod):
     base = os.path.dirname(os.getcwd())
@@ -41,11 +45,19 @@ class Thread_cls(QThread):
         super(Thread_cls,self).__init__(parent)
         self.model = None
         self.__build__()
+<<<<<<< HEAD
+      
+=======
     
+>>>>>>> eeefcbf2b85cd27b19bae65ac760281ee8694b23
     def __build__(self):
         
         if not self.model:
             self.model = build()
+<<<<<<< HEAD
+    
+=======
+>>>>>>> eeefcbf2b85cd27b19bae65ac760281ee8694b23
         
     def run(self,images):
         '''
@@ -78,6 +90,64 @@ class Thread_cls(QThread):
                 
             self.signalOut.emit(results)
             
+<<<<<<< HEAD
+  
+
+class Thread_mou(QThread):
+    
+    signal = pyqtSignal(list)
+    
+    def __init__(self,parent = None):
+        
+        super(Thread_mou,self).__init__(parent)
+#        self.mmodel1 = None
+        self.mmodel2 = None
+        self.__build__()
+    def __build__(self):
+        
+#        if not self.mmodel1:
+#            self.mmodel1 = models1()
+        if not self.mmodel2:
+            self.mmodel2 = models2()   
+    def getmouth(self,image):    
+    
+        b_h,b_w = image.shape[0:2]
+        image_ = cv.resize(image,(96,96),interpolation=cv.INTER_CUBIC)
+        image_g = cv.cvtColor(image_, cv.COLOR_BGR2GRAY)
+        image_gray = np.expand_dims(image_g,2)
+        
+        img = np.expand_dims(image_gray,0)
+       
+        # mouth l,r,t
+        mouths = self.mmodel2.predict(img)
+        mou = []
+        for i in range(0,29,2):
+            mou.append([int(mouths[:,i]),int(mouths[:,i+1])])
+#        mou_l = mouth[:,0:2]
+#        mou_r = mouth[:,2:4]
+#        mou_top = mouth[:,4:6]
+#        mou_bottom = mouth[:,6:8]
+#        
+#        #mouth bottom
+##        b_mou = self.mmodel2.predict(img)
+##        
+##        mou_bottom = b_mou[:,0:2]
+#        
+#        
+#        x_ch = b_w/96
+#        y_ch = b_h/96
+#        
+#        w = int(abs(abs(mou_l[:,0])-abs(mou_r[:,0]))*x_ch)
+#        h = int(abs(abs(mou_top[:,1])-abs(mou_bottom[:,1]))*y_ch)
+#        
+#        y = int(abs(mou_top[:,1])*y_ch)
+#        x = int(abs(mou_l[:,0])*x_ch)
+#        
+#        res = [x,y,w,h]
+        
+        self.signal.emit(mou)
+=======
+>>>>>>> eeefcbf2b85cd27b19bae65ac760281ee8694b23
 class Thread_reg(QThread):
     '''
     检测线程
